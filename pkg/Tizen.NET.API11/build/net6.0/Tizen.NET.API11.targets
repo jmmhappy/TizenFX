@@ -4,19 +4,6 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <_TizenNETCoreAppPackageVersion>3.0.0</_TizenNETCoreAppPackageVersion>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="$(MSBuildThisFileDirectory)ref\*.dll">
-      <Private>false</Private>
-      <Visible>false</Visible>
-      <NuGetPackageId>Microsoft.NETCore.App.Ref</NuGetPackageId>
-      <NuGetPackageVersion>$(_TizenNETCoreAppPackageVersion)</NuGetPackageVersion>
-    </Reference>
-  </ItemGroup>
-
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(MSBuildThisFileDirectory)..\..\buildTransitive\Tizen.NUI.XamlBuild.targets" Condition="Exists('$(MSBuildThisFileDirectory)..\..\buildTransitive\Tizen.NUI.XamlBuild.targets')" />
   </ImportGroup>
