@@ -414,11 +414,21 @@ namespace Tizen.NUI.BaseComponents
                 }
             }
         }
-
         /// <summary>
         /// An event for visibility change which can be used to subscribe or unsubscribe the event handler.<br />
-        /// This signal is emitted when the visible property of this or a parent view is changed.<br />
+        /// This event is sent when the visibility of this or a parent view is changed.<br />
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// When VisibilityChangedEventArgs.Type is SELF, VisibilityChangedEventArgs.Visibility is true means this View's Visibility property is true.
+        /// When VisibilityChangedEventArgs.Type is PARENT, VisibilityChangedEventArgs.Visibility is true means a parent's Visibility property has changed to true.
+        /// </para>
+        /// <para>
+        /// This event is NOT sent if the view becomes transparent (or the reverse), it's ONLY linked with View.Show() and View.Hide().
+        /// For reference, a view is only shown if the view and its parents (up to the root view) are also visible, they are not transparent, and the view has a non-zero size.
+        /// So if its parent is not visible, the view is not shown even though VisibilityChangedEventArgs.Type is SELF and VisibilityChangedEventArgs.Visibility is true.
+        /// </para>
+        /// </remarks>
         /// <since_tizen> 3 </since_tizen>
         public event EventHandler<VisibilityChangedEventArgs> VisibilityChanged
         {
@@ -825,15 +835,30 @@ namespace Tizen.NUI.BaseComponents
                 return true;
             }
 
+            if (DispatchHoverEvents == false)
+            {
+                NUILog.Debug("If DispatchHoverEvents is false, it can not dispatch.");
+                return true;
+            }
+
             HoverEventArgs e = new HoverEventArgs();
 
             e.Hover = Tizen.NUI.Hover.GetHoverFromPtr(hoverEvent);
 
+            bool consumed = false;
+
             if (hoverEventHandler != null)
             {
-                return hoverEventHandler(this, e);
+                consumed = hoverEventHandler(this, e);
             }
-            return false;
+
+            if (DispatchParentHoverEvents == false && consumed == false)
+            {
+                NUILog.Debug("If DispatchParentHoverEvents is false, it can not dispatch to parent.");
+                return true;
+            }
+
+            return consumed;
         }
 
         // Callback for View Wheel signal
