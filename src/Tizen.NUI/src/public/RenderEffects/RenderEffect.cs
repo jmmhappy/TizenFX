@@ -36,20 +36,5 @@ namespace Tizen.NUI
         internal RenderEffect(global::System.IntPtr cPtr) : base(cPtr)
         {
         }
-
-        /// <summary>
-        /// Create a background blur effect
-        /// </summary>
-        /// <remarks>
-        /// Created RenderEffect is immutable.
-        /// </remarks>
-        /// <param name="blurRadius">The blur radius value. The unit is pixel for standard cases.</param>
-        /// <param name="blurOnce">Whether to blur once or always.</param>
-        /// <returns>Background blur effect with given blur radius.</returns>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static RenderEffect CreateBackgroundBlurEffect(float blurRadius, bool blurOnce=false)
-        {
-            return new RenderEffect(Interop.BackgroundBlurEffect.New((uint)Math.Round(blurRadius, 0), blurOnce));
-        }
     }
 }
